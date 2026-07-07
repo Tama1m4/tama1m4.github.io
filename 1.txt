@@ -1,0 +1,268 @@
+拿到一份电影票房原始数据后，分析师通常会先进行描述性分析，再进行分组分析。请说明：
+（1）描述性分析主要解决哪些核心问题？通常会用到哪些统计指标或函数？
+（2）分组分析的目的是什么？在 pandas 中典型的实现步骤是怎样的？
+
+参考答案
+①描述性分析旨在快速回答“数据长什么样”：有多少条记录？平均水平如何？波动大不大？极值是多少？常用统计指标包括 count、mean、std、min、max 等；在 pandas 中可通过 df.describe() 一次性查看，或使用 agg() 按需组合多个统计量。
+
+②分组分析的目的是将整体拆分为若干具有相同性质的组，降低复杂度，观察组间差异与规律。典型实现步骤为：
+确定分组依据（定性如“年份”“地区”，定量如“票价区间”）；
+使用 df.groupby("分组字段") 进行分组；
+对分组后的对象调用聚合函数（如 mean()、sum()、count()）完成统计。
+请列举 5 个常用的 Python 数据分析库，并简要说明它们的主要功能。
+
+pandas：提供高效、灵活且易于使用的数据结构和数据分析工具。
+NumPy：提供大量数值计算函数和数组操作功能。
+Matplotlib：用于绘制各种静态、动态、交互式的图表。
+Seaborn：基于 Matplotlib 的更高层次的数据可视化库，提供更为美观和简洁的图表。
+Scikit-learn：专注于机器学习与数据挖掘的通用库，提供丰富的算法实现（如分类、回归、聚类、降维等）
+
+
+假设你是一家电商公司的数据分析师，你会使用哪些关键绩效指标来评估公司的业务运营情况？请至少列出5个指标并解释其意义。
+
+转化率：访问者中完成购买的比例。
+平均订单价值（AOV）：每个订单的平均金额。
+客户获取成本（CAC）：获取一个新客户的平均成本。
+活跃用户数（MAU/DAU）：月/日活跃用户数量。
+复购率：一段时间内重复购买用户数 ÷ 总购买用户数。
+用户留存率：在某段时间开始使用产品的用户，经过一段时间后仍然活跃的比例。
+投资回报率(ROI)：(产生的收入 - 投入的成本) ÷ 投入的成本。
+
+
+简述时间序列分析在预测未来趋势中的作用，并给出一个应用场景的例子。
+①时间序列分析用于分析按时间顺序排列的数据点，以识别趋势、季节性和周期性。
+②它在预测未来趋势中非常重要，如预测下个季度的销售额。
+③应用场景包括库存管理、需求预测和经济指标预测。
+
+
+
+描述性分析在数据分析中的作用是什么？请简要说明。
+①描述性分析用于总结和组织数据；
+②提供数据的基本特征，如中心趋势（平均值、中位数）、分散程度（方差、标准差）和形状（偏度、峰度）。
+③它帮助我们理解数据的基本情况和分布。
+
+数据清洗通常包括哪些主要工作？请列举并简要说明。
+
+处理缺失值，如删除、填充或预测缺失数据。
+处理重复值，如识别并删除重复记录。
+处理异常值，如用箱线图或统计方法检测后删除、替换或保留分析。
+数据类型转换与格式统一，如日期、数值、文本格式处理。
+数据一致性检查，如字段命名、取值范围和编码统一。
+
+
+简述数据清洗在数据分析中的重要性。
+①数据清洗是数据分析中至关重要的一步，因为它可以确保数据的质量和准确性。
+②在实际的数据收集中，由于各种原因（如输入错误、重复数据、缺失值等），数据往往存在各种问题。
+③数据清洗就是对这些问题进行识别和处理，以确保后续分析的有效性和可靠性。
+
+
+Series 对象和 DataFrame 对象有什么区别？
+①Series 是 Pandas 中最基本的对象，类似于一维数组的对象，由一组数据和一组与之相关的数据标签(索引)组成。
+②DataFrame 对象的数据结构跟 excel 表相似，其目的是将 Series 的使用场景由一维扩展到多维，它由按一定顺序排列的多列数据组成，各列的数据类型可以有所不同。
+
+
+计算学生考试成绩列表 scores = [85, 90, 78, 92, 88, 76, 95, 89, 84, 91] 的中位数和标准差
+
+import numpy as np
+scores = [85, 90, 78, 92, 88, 76, 95, 89, 84, 91]
+arr = np.array(scores)
+median = np.median(arr)
+std_dev = np.std(arr)
+print("中位数:", median)
+print("标准差:", std_dev)
+
+
+
+
+使用 pandas 创建一个商品销售额 DataFrame，按 “地区” 分组计算平均销售额
+import pandas as pd
+df = pd.DataFrame({
+    '地区': ['华东区', '华东区', '华南区', '华南区'],
+    '销售额': [45000, 51000, 38000, 42000]
+})
+result = df.groupby('地区')['销售额'].mean()
+print(result)
+
+
+使用 pandas 创建一个包含姓名、语文、数学、英语成绩的 DataFrame，并新增 “总分” 列
+
+import pandas as pd
+
+data = pd.DataFrame({
+    '姓名': ['张三', '李四', '王五'],
+    '语文': [86, 90, 78],
+    '数学': [92, 85, 88],
+    '英语': [80, 91, 84]
+})
+
+data['总分'] = data[['语文', '数学', '英语']].sum(axis=1)
+print(data)
+
+
+
+使用正则表达式判断输入字符串是否为 6 位数字验证码。
+import re
+code = input('请输入验证码：')
+if re.findall(r'\d{6}', code):
+    print('验证码格式正确')
+else:
+print('验证码格式错误')
+
+写出下面数学式子的 python 代码。
+ 
+import math
+a = math.sqrt(100 - 3**2)
++ math.log(math.exp(2))
++ math.sqrt(16)
+- math.exp(0) * 5
+print(a)
+ 
+1＋1/3+1/5+1/7+···+1/99的代码
+
+import numpy as np
+array1=np.arange(1,100,2)
+sum=0
+for i in array1:
+    sum+=(1/i)
+print(sum)
+
+某超市推出苹果促销活动，每斤苹果定价 12.8 元。购买规则根据重量分段设置不同折扣：
+购买重量小于等于 1 斤：无折扣，按原价结算；
+购买重量大于 1 斤且小于等于 5 斤：享受 9 折优惠；
+购买重量大于 5 斤且小于等于 10 斤：享受 8 折优惠；
+购买重量大于 10 斤：享受 7 折优惠。
+用户通过键盘输入购买数量，屏幕上输出原价和折后价（保留两位小数）。
+写出 python 代码
+
+weight = float(input("请输入购买苹果的重量（斤）："))
+
+price_per_kg = 12.8
+
+if weight <= 1:
+    discount_rate = 1.0 
+elif weight <= 5:
+    discount_rate = 0.9
+elif weight <= 10:
+    discount_rate = 0.8 
+else:
+    discount_rate = 0.7
+
+original_price = weight * price_per_kg
+final_price = original_price * discount_rate
+print (f"原价：{original_price:.2f} 元")
+print (f"折后价：{final_price:.2f} 元")
+
+
+使用 pandas 库处理数据中的缺失值，将缺失值填充为列的平均值。输入：自定义包含缺失值的 DataFrame。输出：处理后的 DataFrame。
+
+import pandas as pd
+import numpy as np
+
+data = pd.DataFrame({
+    'A': [1, 2, np.nan, 4, 5],
+    'B': [5, np.nan, np.nan, 8, 9]
+})
+
+data.fillna(data.mean(), inplace=True)
+print(data)
+
+使用Matplotlib绘制一个柱状图，展示4种水果的供应量，并为每种水果指定不同的颜色
+import matplotlib.pyplot as plt
+
+labels = ['Category A', 'Category B', 'Category C', 'Category D']
+sizes = [15, 30, 45, 10]  # 各个类别的占比（总和应为100的等效值，但不必严格）
+colors = ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']  # 可选：为每个类别指定颜色
+explode = (0.1, 0, 0, 0)  # 可选：突出显示第一个类别（使其稍微远离中心）
+
+plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=140)
+plt.title('Pie Chart Example')
+plt.axis('equal')
+plt.show()
+
+商店记录了 2026 年上半年每个月的销售额数据：
+months = ['一月', '二月', '三月', '四月', '五月', '六月']
+sales_online = [120, 135, 150, 170, 190, 210]
+sales_offline = [100, 115, 130, 125, 140, 160]
+请使用 Matplotlib 绘制一张折线图，要求：
+（1）在线上销售额上使用圆点标记，实线。
+（2）在线下销售额上使用方块标记，虚线。
+
+```python
+import matplotlib.pyplot as plt
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
+months = ['一月', '二月', '三月', '四月', '五月', '六月']
+sales_online = [120, 135, 150, 170, 190, 210]
+sales_offline = [100, 115, 130, 125, 140, 160]
+
+plt.plot(
+    months,
+    sales_online,
+    marker='o',
+    linestyle='-',
+    label='线上销售额'
+)
+
+plt.plot(
+    months,
+    sales_offline,
+    marker='s',
+    linestyle='--',
+    label='线下销售额'
+)
+
+plt.title('2026 年上半年销售额变化图')
+plt.xlabel('月份')
+plt.ylabel('销售额（万元）')
+
+plt.legend()
+plt.grid(True)
+plt.show()
+plt.show()
+
+使用 pandas 创建一个员工工资 DataFrame，按 “部门” 分组计算平均工资。
+数据：{' 部门 ': [' 技术部 ', ' 技术部 ', ' 销售部 ', ' 销售部 '],' 工资 ': [8000, 9000, 7000, 7500]}
+
+import pandas as pd
+
+df = pd.DataFrame({
+    '部门': ['技术部', '技术部', '销售部', '销售部'],
+    '工资': [8000, 9000, 7000, 7500]
+})
+result = df.groupby('部门')['工资'].mean()
+print(result)
+
+
+使用 pandas 创建一个包含商品名称、单价和销量的 DataFrame，请新增一列 “总价”
+
+import pandas as pd
+
+data = pd.DataFrame({
+    '商品名称': ['笔记本', '钢笔', '文件夹'],
+    '单价': [5, 15, 8],
+    '销量': [120, 80, 150]
+})
+data['总价'] = data['单价'] * data['销量']
+
+print(data)
+
+
+import pandas as pd
+
+df = pd.DataFrame({
+    '订单号': [1001, 1002, 1003, 1004, 1005],
+    '商品': ['键盘', '鼠标', '显示器', '键盘', '鼠标'],
+    '地区': ['华南', '华东', '华南', '华北', '华南'],
+    '单价': [120, 80, 900, 120, 80],
+    '数量': [3, 5, 2, 4, 6]
+})
+df['销售额'] = df['单价'] * df['数量'] # 新增销售额
+print(df)
+
+按商品分组统计每种商品的销售额合计
+result = df.groupby('商品')['销售额'].sum()  # 分组汇总
+print(result)
+
+
+
